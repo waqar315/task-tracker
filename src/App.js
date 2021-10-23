@@ -3,6 +3,7 @@ import AddTasks from './components/AddTasks';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import { useEffect, useState } from 'react';
+import { FaTimes } from "react-icons/fa"
 
 
 
@@ -93,7 +94,10 @@ const addTask= async (task)=>{
       {/* OR */}
       {(!showAddTask) && <AddTasks onAdd={addTask}/>}
       {tasks.length>0 ? <Tasks  tasks={tasks} ondelete={deleteTask} ontoggle={onToggle} /> : 'No tasks to show'}
+      
+    
     </div>
+    
   );
 }
 
