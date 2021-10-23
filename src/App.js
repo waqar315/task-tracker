@@ -28,15 +28,29 @@ function App() {
       return data
         }
 
+  // Fetch Task from db.json //
+  const fetchTask=async(id)=>{ 
+    const res =await fetch(`http://localhost:5000/tasks/${id}`)
+      const data= await res.json()
+      return data
+        }
 
 
 // AddTask //
-const addTask=(task)=>{
-  const id=Math.floor(Math.random() * 10000) +1
-  // console.log(id)
-  const  newTask={id, ...task}
-  setTasks([...tasks, newTask])
-
+const addTask= async (task)=>{
+ 
+  const res = await fetch(`http://localhost:5000/tasks`,
+  {
+    method: 'POST',
+    // add Header to specify type of content //
+    headers: {
+      'Content-type': 'application/json'
+    },
+    // convert getting data from input convert object into json because we are sending data to db.json //
+    'body': JSON.stringify(task)
+  })
+  const data= await res.json()
+  setTasks([...tasks, data])
 }
 
   // OnDelete //
@@ -50,12 +64,27 @@ const addTask=(task)=>{
   
 
   // onToggle //
-  const onToggle=(id)=>(
+  const onToggle= async(id)=>{
+    const taskToToggle= await fetchTask(id)
+    const updatdeTask= { ...taskToToggle, 
+    reminder: !taskToToggle.reminder}
+
+
+    const res= await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(updatdeTask)
+    })
+    const data= await res.json()
+    
+
     setTasks(
       tasks.map(
-        (task)=>task.id===id ?{...task, reminder:!task.reminder}:task)
+        (task)=>task.id===id ?{...task, reminder:data.reminder}:task)
     )
-  )
+  }
   
   return (
     <div className="container">
