@@ -3,7 +3,9 @@ import AddTasks from './components/AddTasks';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import { useEffect, useState } from 'react';
-import { FaTimes } from "react-icons/fa"
+import Footer from './components/Footer';
+import { BrowserRouter as Router, Route  } from 'react-router-dom';
+import About from './components/About';
 
 
 
@@ -87,17 +89,39 @@ const addTask= async (task)=>{
     )
   }
   
+
+
+
   return (
+    <Router>
     <div className="container">
       <Header ONAdd={()=>setShowAddTask(!showAddTask)} showTask={showAddTask}/>
-      {/* {(showAddTask) ? '' : <AddTasks onAdd={addTask}/>} */}
-      {/* OR */}
-      {(!showAddTask) && <AddTasks onAdd={addTask}/>}
-      {tasks.length>0 ? <Tasks  tasks={tasks} ondelete={deleteTask} ontoggle={onToggle} /> : 'No tasks to show'}
       
-    
+
+
+      
+
+
+        <Route path='/' exact render={(props)=>(
+           <>
+
+
+             {/* {(showAddTask) ? '' : <AddTasks onAdd={addTask}/>} */}
+             {/* OR */}
+             {(!showAddTask) && <AddTasks onAdd={addTask}/>}
+             {tasks.length>0 ? <Tasks  tasks={tasks} ondelete={deleteTask} ontoggle={onToggle} /> : 'No tasks to show'}
+
+           </>
+
+             )}
+        />
+
+        <Route path='/about' component={About}/>
+      
+      <Footer />
+   
     </div>
-    
+    </Router>
   );
 }
 
